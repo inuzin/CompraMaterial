@@ -10,25 +10,42 @@ public class Cadastro
 		p.add(new Produto(nome,descricao,medida,valormedida));
 	}
 	
-	public void AddSolicitacao(ArrayList<Solicitacao> s, String pagamento, String formapagamento, String localcompra, String datacompra, Boolean status)
+	public void AddSolicitacao(ArrayList<Solicitacao> s)
 	{
-		s.add(new Solicitacao(new ArrayList<Item>(), pagamento, formapagamento, localcompra, datacompra, status));
+		s.add(new Solicitacao(new ArrayList<Item>(), 0, "", "", "", false));
 	}
 	
-	public void AtualizarSolicitacao(Solicitacao s, String Item_Nome, int Quantidade, String pagamento, String formapagamento, String localcompra, String datacompra)
+	public void AtualizarSolicitacao(Solicitacao s, double precounitario, String formapagamento, String localcompra, String datacompra)
 	{
-		//adicionar item -- checar se ja existe primeiro
-		s.item.get(s.item.size() -1).P.setNome(Item_Nome);
-		s.item.get(s.item.size() -1).quantidade += 1;
-		s.pagamento = pagamento;
+		s.precounitario = precounitario;
 		s.formapagamento = formapagamento;
 		s.localcompra = localcompra;
 		s.datacompra = datacompra;
 	}
 	
-	public void AddItem(ArrayList<Produto> p, Solicitacao s, String Nome, int Quantidade)
+	public void AddItem(Produto p, Solicitacao s)
 	{
-		//Checa se o produto existe
+		//Checa se o item ja existe
+		
+		for(int i = 0; i <= s.item.size() - 1; i++)
+		{
+			if(s.item.get(i).P.equals(p))
+			{
+				s.item.get(i).setQuantidade(s.item.get(i).getQuantidade() + 1);
+				AtualizarSolicitacao(s, SomarPrecoSolicitacao(s,i), "", "", "");
+				return;
+			}
+		}
+		
+		//Caso nao exista, criar novo item
+		
+		s.item.add(new Item(p, 1));
+		AtualizarSolicitacao(s, SomarPrecoSolicitacao(s,0), "", "", "");
+	}
+	
+	public double SomarPrecoSolicitacao(Solicitacao s, int i)
+	{
+		return s.item.get(i).P.getValormedida() + s.precounitario;
 	}
 	
 	public void CancelarSolicitacao(Solicitacao s)
@@ -49,13 +66,6 @@ public class Cadastro
 				quantidade_total += s.get(i).item.get(j).P.getValormedida();
 			}			
 		}
-	}
-	
-	public ArrayList<Solicitacao> FilteredList(ArrayList<Solicitacao> s)
-	{
-		//Forma uma nova lista para evitar repeticoes 
-		
-		return s;
 	}
 
 }

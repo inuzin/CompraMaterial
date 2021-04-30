@@ -10,28 +10,20 @@ public class Solicitacao {
 	String datacompra;
 	Boolean status; 
 	
-	public Solicitacao(ArrayList<Item> Item, String Pagamento, String Formapagamento, String Localcompra, String Datacompra, Boolean Status)
+	public Solicitacao(ArrayList<Item> Item, double Precounitario, String Formapagamento, String Localcompra, String Datacompra, Boolean Status)
 	{
 		item = Item;
-		pagamento = Pagamento;
+		precounitario = Precounitario;
 		formapagamento = Formapagamento;
 		localcompra = Localcompra;
 		datacompra = Datacompra;
 		status = Status;
 	}
 	
-	public static Boolean getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
-	public static void setStatus(Boolean status) {
-		Solicitacao.status = status;
-	}
-	public Produto getProduto() {
-		return produto;
-	}
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
+
 	public int getQuantidade() {
 		return quantidade;
 	}
